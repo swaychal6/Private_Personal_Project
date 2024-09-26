@@ -1,0 +1,25 @@
+1725814420763	Rename type 'CommonUtility'
+1725861451827	Delete element
+1725862757975	Rename package 'com.jansuraksha.utility'
+1725877585034	Copy compilation unit
+1725877602340	Delete element
+1725878680573	Delete element
+1726030161177	Rename type 'CommonAPICallingUtility'
+1726048840651	Delete element
+1726048848326	Delete element
+1726057498785	Delete elements
+1726119736055	Rename package 'com.jansuraksha.dto'
+1726119950235	Copy compilation units
+1726120320182	Delete elements
+1726120350745	Move compilation units
+1726126590809	Move compilation unit
+1726148543124	Rename package 'com.jansuraksha.API_response'
+1726148741590	Rename type 'UpdateEnrolmentAcStatusResponse'
+1726148754376	Rename type 'UpdateTransactionDetails'
+1726249385682	Rename package 'com.jansuraksha.APIresponse.dto'
+1726249412784	Rename package 'com.jansuraksha.arktoaadhar.dto'
+1726249442881	Rename package 'com.jansuraksha.enrollmentJansuraksha.dto'
+1726249464160	Rename package 'com.jansuraksha.updatetranJansuraksha.dto'
+1726249633865	Move compilation unit
+1726249640364	Delete element
+1726336641403	Rename method 'responseEnrollmentDetails'

@@ -1,0 +1,30 @@
+package com.jansuraksha.dto.updateAcstatusDto;
+
+import com.jansuraksha.dto.GetCustomerDetailDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString(callSuper = true)
+public class UpdateAcStatusFrontendReq extends GetCustomerDetailDto {
+
+	private String policyStatus;
+
+	private String reasonOfClosure;
+	
+
+	UpdateAcStatusFrontendReq(String customerAcc, String cifCode, String scheme,String policyStatus,String reasonOfClosure) {
+		super(customerAcc, cifCode, scheme);
+		this.policyStatus=policyStatus;
+		this.reasonOfClosure=reasonOfClosure;
+	}
+
+}

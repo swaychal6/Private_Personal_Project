@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="cif"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="cif"/>
+			<item value="int"/>
+			<item value="TYPE_OF"/>
+			<item value="TYPES_OF"/>
+			<item value="DB_UPDATE"/>
+			<item value="TRANNO"/>
+			<item value="REMITTING_AMOUNT"/>
+			<item value="PRAN_NO"/>
+			<item value="CSP_CODE"/>
+			<item value="SCHEME"/>
+			<item value="SCHEME&apos;"/>
+			<item value="amen"/>
+			<item value="amend"/>
+			<item value="super"/>
+			<item value="poli"/>
+		</list>
+		<list key="replacehistory">
+			<item value="RollingFileAppender"/>
+			<item value="RRB"/>
+			<item value="RRB2"/>
+			<item value="RRB1"/>
+			<item value="99"/>
+			<item value="27"/>
+			<item value="2213"/>
+			<item value="1653"/>
+			<item value="1645"/>
+			<item value="108"/>
+			<item value="SYSDATE-1"/>
+			<item value="SYSDATE-2"/>
+			<item value="ApplicationConfig"/>
+			<item value="logger.info"/>
+			<item value="DatabaseMaster"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="866"/>
+		<item key="DIALOG_Y_ORIGIN" value="210"/>
+		<item key="DIALOG_WIDTH" value="322"/>
+		<item key="DIALOG_HEIGHT" value="352"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>

@@ -1,0 +1,11 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.Query;
+
+public interface CommonBaseRepository<T,K> {
+
+	@Query("select * from ")
+	T getCustomerDetailsByCustomerAccAndCif();
+	
+	
+}

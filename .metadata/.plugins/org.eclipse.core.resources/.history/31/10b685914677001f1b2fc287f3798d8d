@@ -1,0 +1,16 @@
+package com.jansuraksha.dto;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class GetCustomerDetailDto {
+
+	private String customerAcc;
+	
+	private String cifCode;
+	
+	private String scheme;
+	
+}

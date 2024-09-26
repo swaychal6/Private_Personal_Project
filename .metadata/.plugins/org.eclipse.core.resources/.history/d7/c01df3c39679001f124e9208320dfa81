@@ -1,0 +1,5 @@
+package com.pm.jns.entity;
+
+public class PM_JNS_SBI_TRANSACTIONS {
+
+}

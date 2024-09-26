@@ -1,0 +1,15 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BaseRepository<T,ID> extends JpaRepository<T, ID>{
+
+	default T getCustomerDetails(String bankCode,String cifCode,String scheme) {
+		return null;
+	}
+
+	
+	T findBy();
+}

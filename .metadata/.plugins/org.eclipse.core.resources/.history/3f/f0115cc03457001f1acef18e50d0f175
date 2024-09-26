@@ -1,0 +1,30 @@
+package com.apy_si.dao;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import com.apy_si.entity.APY_MASTER_TRANSACTIONS;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class ApyDataReader {
+
+	private final DataSource dataSource;
+
+	public JdbcCursorItemReaderBuilder<APY_MASTER_TRANSACTIONS> cursorItemReader(){
+		
+		return new JdbcCursorItemReaderBuilder<APY_MASTER_TRANSACTIONS>()
+				.dataSource(dataSource)
+				.name("APYReader")
+				.sql(null)
+			
+	}
+
+}

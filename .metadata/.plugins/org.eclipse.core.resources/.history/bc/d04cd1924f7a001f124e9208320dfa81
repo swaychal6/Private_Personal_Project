@@ -1,0 +1,5 @@
+package com.pm.jns.dto.requestdto;
+
+public class CoiDocumentDetails {
+
+}

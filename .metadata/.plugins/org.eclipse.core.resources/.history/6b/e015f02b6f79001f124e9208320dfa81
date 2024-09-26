@@ -1,0 +1,30 @@
+package com.pm.jns.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "PM_Kyc_Details")
+public class KycDetails {
+	
+	@Column(nullable = true, length = 100)
+	private String NAME_OF_KYC_DOCUMENT;
+
+	@Column(nullable = true)
+	private Integer KYC_ID_NO;
+
+	@Column(nullable = true, length = 12)
+	private String AADHAR;
+
+	@Column(nullable = true, length = 10)
+	private String PANCARD;
+}

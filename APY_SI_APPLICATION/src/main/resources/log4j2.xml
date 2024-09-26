@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+
+	<Properties>
+		<!-- <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p
+		%m%n</Property> -->
+		<Property name="APP_LOG_ROOT">D:/CPSMS/PMI_Schedulars/APY_SI/logs/
+		</Property>
+		<Property name="LOG_PATTERN">%highlight{%d{dd-MMM-yyyy HH:mm:ss}[%t][%-5p] [%c] ==> %msg%n}{FATAL=red,ERROR=red,WARN=yellow,INFO=black, DEBUG=green, TRACE=blue}</Property>
+
+	</Properties>
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+
+		<RollingFile name="debugLog" fileName="${sys:APP_LOG_ROOT}/debug.log"
+			filePattern="${APP_LOG_ROOT}/debug-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="infoLog" fileName="${sys:APP_LOG_ROOT}/info.log"
+			filePattern="${APP_LOG_ROOT}/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="errorLog" fileName="${sys:APP_LOG_ROOT}/error.log"
+			filePattern="${APP_LOG_ROOT}/error-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="springLog"
+			fileName="${sys:APP_LOG_ROOT}/spring.log"
+			filePattern="${APP_LOG_ROOT}/spring-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingFile>
+
+		<RollingFile name="aopLog" fileName="${APP_LOG_ROOT}/aop.log"
+			filePattern="${APP_LOG_ROOT}/aop-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingFile>
+
+		<RollingFile name="95_JRGB"
+			fileName="${sys:APP_LOG_ROOT}/95_JRGB/info_95_JRGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/95_JRGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="96_MBGB"
+			fileName="${sys:APP_LOG_ROOT}/96_MBGB/info_96_MBGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/96_MBGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="99_UKGB"
+			fileName="${sys:APP_LOG_ROOT}/99_UKGB/info_99_UKGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/99_UKGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="102_KVGB"
+			fileName="${sys:APP_LOG_ROOT}/102_KVGB/info_102_KVGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/102_KVGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="101_ARGB"
+			fileName="${sys:APP_LOG_ROOT}/101_ARGB/info_101_ARGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/101_ARGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="1645_UTGB"
+			fileName="${sys:APP_LOG_ROOT}/1645_UTGB/info_1645_UTGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/1645_UTGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="1653_CHGB"
+			fileName="${sys:APP_LOG_ROOT}/1653_CHGB/info_1653_CHGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/1653_CHGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="1833_ELGB"
+			fileName="${sys:APP_LOG_ROOT}/1833_ELGB/info_1833_ELGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/1833_ELGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="61_ACRB"
+			fileName="${sys:APP_LOG_ROOT}/61_ACRB/info_61_ACRB.log"
+			filePattern="${sys:APP_LOG_ROOT}/61_ACRB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="62_MZGB"
+			fileName="${sys:APP_LOG_ROOT}/62_MZGB/info_62_MZGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/62_MZGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="1859_APGVB"
+			fileName="${sys:APP_LOG_ROOT}/1859_APGVB/info_1859_APGVB.log"
+			filePattern="${sys:APP_LOG_ROOT}/1859_APGVB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="1664_TGB"
+			fileName="${sys:APP_LOG_ROOT}/1664_TGB/info_1664_TGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/1664_TGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="374_MGRB"
+			fileName="${sys:APP_LOG_ROOT}/374_MGRB/info_374_MGRB.log"
+			filePattern="${sys:APP_LOG_ROOT}/374_MGRB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="59_NGRB"
+			fileName="${sys:APP_LOG_ROOT}/59_NGRB/info_59_NGRB.log"
+			filePattern="${sys:APP_LOG_ROOT}/59_NGRB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="108_BOM"
+			fileName="${sys:APP_LOG_ROOT}/108_BOM/info_108_BOM.log"
+			filePattern="${sys:APP_LOG_ROOT}/108_BOM/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="27_RMGB"
+			fileName="${sys:APP_LOG_ROOT}/27_RMGB/info_27_RMGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/27_RMGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="2213_SRGB"
+			fileName="${sys:APP_LOG_ROOT}/2213_SRGB/info_2213_SRGB.log"
+			filePattern="${sys:APP_LOG_ROOT}/2213_SRGB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+
+		<RollingFile name="251_SPCB"
+			fileName="${sys:APP_LOG_ROOT}/251_SPCB/info_251_SPCB.log"
+			filePattern="${sys:APP_LOG_ROOT}/251_SPCB/info-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="100000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+	</Appenders>
+
+
+	<Loggers>
+		<Logger name="95_JRGB" level="info" additivity="false">
+			<AppenderRef ref="95_JRGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="96_MBGB" level="info" additivity="false">
+			<AppenderRef ref="96_MBGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="99_UKGB" level="info" additivity="false">
+			<AppenderRef ref="99_UKGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="102_KVGB" level="info" additivity="false">
+			<AppenderRef ref="102_KVGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="101_ARGB" level="info" additivity="false">
+			<AppenderRef ref="101_ARGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="1645_UTGB" level="info" additivity="false">
+			<AppenderRef ref="1645_UTGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="1653_CHGB" level="info" additivity="false">
+			<AppenderRef ref="1653_CHGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="1833_ELGB" level="info" additivity="false">
+			<AppenderRef ref="1833_ELGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="61_ACRB" level="info" additivity="false">
+			<AppenderRef ref="61_ACRB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="62_MZGB" level="info" additivity="false">
+			<AppenderRef ref="62_MZGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="1859_APGVB" level="info" additivity="false">
+			<AppenderRef ref="1859_APGVB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="1664_TGB" level="info" additivity="false">
+			<AppenderRef ref="1664_TGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="374_MGRB" level="info" additivity="false">
+			<AppenderRef ref="374_MGRB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="59_NGRB" level="info" additivity="false">
+			<AppenderRef ref="59_NGRB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="108_BOM" level="info" additivity="false">
+			<AppenderRef ref="108_BOM" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="27_RMGB" level="info" additivity="false">
+			<AppenderRef ref="27_RMGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="2213_SRGB" level="info" additivity="false">
+			<AppenderRef ref="2213_SRGB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="251_SPCB" level="info" additivity="false">
+			<AppenderRef ref="251_SPCB" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger
+			name="com.apy_si.ApySiApplication" additivity="false">
+			<AppenderRef ref="aopLog" />--> <AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="com" additivity="false">
+			<AppenderRef ref="debugLog" />
+			<AppenderRef ref="infoLog" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+
+		<Root
+			level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+
+	</Loggers>
+
+	<!--<Loggers>
+
+
+		<Logger name="com.apy_si.ApySiApplication" additivity="false">
+			<AppenderRef ref="aopLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Logger name="com" additivity="false">
+			<AppenderRef ref="debugLog" />
+			<AppenderRef ref="infoLog" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Logger name="org.springframework" additivity="false">
+			<AppenderRef ref="springLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Root level="all">
+			<AppenderRef ref="Console" />
+		</Root>
+
+
+	</Loggers>-->
+
+</Configuration>

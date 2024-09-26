@@ -1,0 +1,39 @@
+package com.pm.jns.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+public class KycDetailsEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // Existing fields...
+
+    @NotNull
+    @Pattern(regexp = "^(AADHAR|PAN|VOTERID|DRIVINGL|PASSPORT|MGNREGA)$", message = "Invalid KYC ID")
+    @Column(name = "kyc_id1", nullable = false)
+    private String kycId1;
+
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "kyc_id_value1", nullable = false)
+    private String kycIdValue1;
+
+    @Size(min = 10, max = 10)
+    @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Invalid PAN number")
+    @Column(name = "pan_number")
+    private String panNumber;
+
+    @Size(min = 12, max = 12)
+    @Pattern(regexp = "^[2-9]{1}[0-9]{11}$", message = "Invalid Aadhaar number")
+    @Column(name = "aadhaar_number")
+    private String aadhaarNumber;
+
+}

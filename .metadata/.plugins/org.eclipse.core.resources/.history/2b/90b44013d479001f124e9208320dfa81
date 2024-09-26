@@ -1,0 +1,8 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BaseRepository<T,ID> extends JpaRepository<T, ID> {
+
+	T getCustomerDetails(String bankCode,String cifCode,String scheme);
+}

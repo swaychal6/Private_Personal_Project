@@ -1,0 +1,34 @@
+package com.pm.jns.service;
+
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.dto.requestdto.PushEnrollmentDetailsDto;
+import com.pm.jns.repository.BaseRepository;
+
+@Service
+//@RequiredArgsConstructor
+public class PMCommonService<T, ID> {
+
+	
+	private BaseRepository<T, ID> baseRepo;
+
+	public int saveTransactions(Class<T>clazz,Object object) {
+		
+		return 0;
+	}
+	
+	
+	private Object mappedDtoToDatabaseEntity(PushEnrollmentDetailsDto detailsDto){
+		
+		if("PMJJBY".equals(detailsDto.getSchemeName())){
+			
+		}
+		
+		return null;
+	}
+	
+	
+//	private String checkAgency() {
+//		
+//	}
+}

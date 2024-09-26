@@ -1,0 +1,57 @@
+package com.pm.jns.entity;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name="Guardian_details")
+public class GuardianDetailsEntity {
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+
+	    @NotNull
+	    @Pattern(regexp = "^(Husband|Wife|Father|Mother|Son|Daughter|Brother|Sister|Grand father|Grand mother|Grand son|Grand daughter|Mother in law|Father in law|Brother in law|Sister in law|Nephew|Niece|Uncle|Aunt|Others)$", message = "Invalid relationship")
+	    @Column(name = "relationship", nullable = false)
+	    private String relationship;
+
+	    @Size(min = 10, max = 10)
+	    @Pattern(regexp = "^[6789]\\d{9}$", message = "Invalid mobile number")
+	    @Column(name = "mobile")
+	    private String mobile;
+
+	    @NotNull
+	    @Size(min = 1, max = 300)
+	    @Pattern(regexp = "^[a-zA-Z]+[a-zA-Z .'/-]*[a-zA-Z.'/-]*$", message = "Invalid guardian name")
+	    @Column(name = "guardian_name", nullable = false)
+	    private String guardianName;
+
+	    @NotNull
+	    @Size(min = 2, max = 500)
+	    @Pattern(regexp = "^[a-zA-Z0-9/.,:@#&_=()\\\"'-]+[a-zA-Z0-9/.,: @#&_=()\\\"'-]*[a-zA-Z0-9/.,:@#&_=()\\\"'-]*$", message = "Invalid address of guardian")
+	    @Column(name = "address_of_guardian", nullable = false)
+	    private String addressOfGuardian;
+
+	    @Size(min = 5, max = 255)
+	    @Email(message = "Invalid email format")
+	    @Column(name = "email_id")
+	    private String emailId;
+
+}

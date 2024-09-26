@@ -1,0 +1,13 @@
+spring.application.name=PM_JNS_DIY
+spring.datasource.url= jdbc:oracle:thin:@10.43.49.33:1521:xe
+spring.datasource.username=localdb
+spring.datasource.password=localdb
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+logging.level.root= info
+
+server.port=9194
+
+#JPA properties
+spring.jpa.database-platform=org.hibernate.Oracle12cDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true

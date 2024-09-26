@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Rural_Util.java&apos; to &apos;ApySI_Batch_Code/src/main/java/com.apy_si.CBSUtil&apos;&#x0D;&#x0A;- Original project: &apos;APY_SI_APPLICATION&apos;&#x0D;&#x0A;- Destination element: &apos;ApySI_Batch_Code/src/main/java/com.apy_si.CBSUtil&apos;&#x0D;&#x0A;- Original element: &apos;com.apy_si.CBSUtil.Rural_Util.java&apos;" description="Copy compilation unit" destination="=ApySI_Batch_Code/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.apy_si.CBSUtil" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.apy_si.CBSUtil{Rural_Util.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1723306207661" units="1" version="1.0"/>
+</session>

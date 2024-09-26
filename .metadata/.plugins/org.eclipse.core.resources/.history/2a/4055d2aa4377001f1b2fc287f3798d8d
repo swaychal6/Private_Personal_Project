@@ -1,0 +1,5 @@
+package com.jansuraksha.dto.updateAcstatusDto;
+
+public class UpdateAcStatusFrontendReq {
+
+}

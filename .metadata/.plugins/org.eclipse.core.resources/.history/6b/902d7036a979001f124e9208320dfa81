@@ -1,0 +1,14 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
+public interface CommonBaseRepoImpl<T,K> extends CommonBaseRepository<T>,JpaRepository<T, K>{
+
+	default T getCustomerDetails(String cifCode, String customerAcc,String bankCode) {
+		return this.getCustomerDetailsByCustomerAccAndCif(getClass().getSimpleName(), cifCode, customerAcc, bankCode);
+	}
+	
+	
+}

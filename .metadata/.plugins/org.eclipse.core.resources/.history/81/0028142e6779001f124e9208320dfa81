@@ -1,0 +1,5 @@
+package com.pm.jns.entity;
+
+public class KycDetails {
+
+}

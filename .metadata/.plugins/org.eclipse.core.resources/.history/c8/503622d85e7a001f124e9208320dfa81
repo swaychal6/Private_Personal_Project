@@ -1,0 +1,28 @@
+package com.pm.jns.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name="BANK_MASTER_AGENCY")
+public class BANK_MASTER_AGENCY {
+
+	private String APY;
+	private String ARK_URL;
+	@Id
+	private String BANK_CODE;
+	private String BANK_NAME;
+	private String EMAIL_ID;
+	private String PMJJBY;
+	private String PMSBY;
+	private String BANKSHORTNAME;
+
+}

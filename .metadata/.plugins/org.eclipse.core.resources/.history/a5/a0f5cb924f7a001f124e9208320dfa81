@@ -1,0 +1,20 @@
+//package com.pm.jns.service;
+//
+//import org.springframework.stereotype.Service;
+//
+//import com.pm.jns.repository.BaseRepository;
+//import com.pm.jns.repository.CommonBaseRepoImpl;
+//
+//import lombok.RequiredArgsConstructor;
+//
+//@Service
+//@RequiredArgsConstructor
+//public class PMCommonService<T, ID> {
+//
+//	private final BaseRepository<T, ID> commonService;
+//
+//	public int saveTransactions(Class<T>clazz,Object object) {
+//		
+//		return 0;
+//	}
+//}

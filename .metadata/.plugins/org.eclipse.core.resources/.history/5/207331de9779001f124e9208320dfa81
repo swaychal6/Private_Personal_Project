@@ -1,0 +1,15 @@
+package com.pm.jns.service;
+
+import com.pm.jns.entity.SBI_PMJJBY_TRANSACTIONS;
+import com.pm.jns.repository.CommonBaseRepoImpl;
+
+public class SbiPmjjbyService extends PMCommonService<SBI_PMJJBY_TRANSACTIONS, Long>{
+
+	public SbiPmjjbyService(CommonBaseRepoImpl<SBI_PMJJBY_TRANSACTIONS, Long> baseRepoImpl) {
+		super(baseRepoImpl);
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+
+}

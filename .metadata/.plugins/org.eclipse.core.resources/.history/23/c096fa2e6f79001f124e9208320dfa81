@@ -1,0 +1,101 @@
+package com.pm.jns.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "JANSURAKSHA_SBI_PMJJBY_TRANSACTIONS", uniqueConstraints = @UniqueConstraint(columnNames = "TXN_ID"))
+@Builder
+public class JansurakshaSbiPmjjbyTransactions extends BaseEntity<String> {
+	@Column(nullable = true, columnDefinition = "VARCHAR(50) DEFAULT 'SBI LIFE SS - PMJJBY'",length = 20)
+	private String PRODUCT_NAME;
+
+
+	@Column(nullable = true)
+	private String SBI_MASTER_POLICY;
+
+
+	@Column(nullable = true, length = 50)
+	private String AMEND_STATUS;
+
+	@Column(nullable = true, length = 50)
+	private String AMEND_TELLER_ID;
+
+	@Column(nullable = true, length = 50)
+	private String AMEND_TELLER_BRANCH;
+
+	@Column(nullable = true, length = 50)
+	private String AMEND_TXN_TIME;
+
+
+	@Column(nullable = true, length = 255)
+	private String SCHEMENAME;
+
+	@Column(nullable = true, length = 10)
+	private String FLAG7;
+
+	@Column(nullable = true, length = 10)
+	private String DATENODE;
+
+	@Column(nullable = true)
+	private Integer TXNAMOUNT1;
+
+	@Column(nullable = true)
+	private String AMOUNT1;
+
+
+	@Column(nullable = true, length = 5)
+	private String DB_UPDATE;
+
+	@Column(nullable = true, length = 10)
+	private String SCREENNO;
+
+	@Column(nullable = true)
+	private String REMITTING_AMOUNT;
+
+	@Column(nullable = true)
+	private Integer PRAN_NO;
+
+
+	@Column(nullable = true, length = 50)
+	private String CSP_CODE;
+
+	
+	
+
+//	public void setStatus_txnTime() {
+//		LocalDate today = LocalDate.now();
+//		int currentYear = today.getYear();
+//		int currentMonth = today.getMonthValue();
+//		if (currentMonth >= 5) {
+////			POLICY_STATUS = "ACTIVE_" + (currentYear + 1);
+//			 EXPIRY_DATE = LocalDate.of(currentYear + 1, 5, 31);
+//			System.out.println(EXPIRY_DATE);
+//
+//			// Format LocalDate into a string
+//			DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//			String format = dateFormat.format(EXPIRY_DATE);
+//			System.out.println(format);
+//			EXPIRY_DATE = LocalDate.parse(format, dateFormat);
+//			System.out.println(EXPIRY_DATE);
+//
+//		} else {
+////			POLICY_STATUS = "ACTIVE_" + currentYear;
+//			 EXPIRY_DATE = LocalDate.of(currentYear, 5, 31);
+//		}
+//
+//	}
+
+
+
+}

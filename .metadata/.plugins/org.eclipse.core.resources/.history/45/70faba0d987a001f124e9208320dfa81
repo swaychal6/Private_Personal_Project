@@ -1,0 +1,71 @@
+package com.pm.jns.service;
+
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.dto.requestdto.PushEnrollmentDetailsDto;
+import com.pm.jns.entity.CustomerDetailsEntity;
+import com.pm.jns.entity.GuardianDetailsEntity;
+import com.pm.jns.entity.KycDetailsEntity;
+import com.pm.jns.entity.OtherDetailsEntity;
+import com.pm.jns.repository.BaseRepository;
+import com.pm.jns.repository.CustomerDetailsRepo;
+import com.pm.jns.utils.EntityMapper;
+
+@Service
+//@RequiredArgsConstructor
+public class PMCommonService<T, ID> {
+
+	private T id;
+	
+	private BaseRepository<T, ID> baseRepo;
+	
+	private CustomerDetailsRepo customerRepo;
+
+	private EntityMapper entityMapper;
+//	public int saveTransactions(Class<T> clazz, Object object) {
+//
+//		return 0;
+//	}
+
+	private T mappedDtoToDatabaseEntity(PushEnrollmentDetailsDto detailsDto) {
+
+		CustomerDetailsEntity customerdetails = entityMapper.classMapperPojo(detailsDto, CustomerDetailsEntity.class);
+		KycDetailsEntity kycDetails = entityMapper.classMapperPojo(detailsDto, KycDetailsEntity.class);
+		GuardianDetailsEntity guardianDetails = entityMapper.classMapperPojo(detailsDto, GuardianDetailsEntity.class);
+		OtherDetailsEntity otherDetails = entityMapper.classMapperPojo(detailsDto, OtherDetailsEntity.class);
+		
+		
+		
+		
+		
+//		try {
+//		String checkAgency = this.checkAgency(detailsDto.getBankCode(), detailsDto.getSchemeName());
+//		if ("LIC".equals(checkAgency)) {
+//			PM_JNS_LIC_TRANSACTIONS lic;
+//			
+//			
+////			baseRepo.save(null);
+//		}
+//		}catch(Exception e ) {
+//			
+//		}
+		return null;
+	}
+
+	
+//	public int checkCifExist() {
+//			customerRepo.find;
+//		return 0;
+//	}
+	
+//	private String checkAgency(@NotNull String bankName, @NotNull String scheme) {
+//		if ("PMJJBY".equals(scheme)) {
+//			return PmJnsDiyApplication.fetch.stream().filter(t -> t.getBANKSHORTNAME().equals(bankName))
+//					.map(t -> t.getPMJJBY().substring(0, 3)).findFirst().get();
+//
+//		} else {
+//			return PmJnsDiyApplication.fetch.stream().filter(t -> t.getBANKSHORTNAME().equals(bankName))
+//					.map(t -> t.getPMSBY().substring(0,3)).findFirst().get();
+//		}
+//	}
+}

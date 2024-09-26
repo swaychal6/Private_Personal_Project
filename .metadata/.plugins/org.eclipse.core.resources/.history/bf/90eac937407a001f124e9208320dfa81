@@ -1,0 +1,25 @@
+spring.application.name=PM_JNS_DIY
+#spring.datasource.url= jdbc:oracle:thin:@10.43.49.33:1521:xe
+#spring.datasource.username=localdb
+#spring.datasource.password=localdb
+#spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+#logging.level.root= info
+
+#server.port=9194
+
+#JPA properties
+#spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+
+#spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+logging.level.root= info
+
+server.port=8190
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+ spring.jpa.open-in-view=true

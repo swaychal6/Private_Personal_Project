@@ -1,0 +1,37 @@
+package com.pm.jns.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.dto.requestdto.PushEnrollmentDetailsDto;
+import com.pm.jns.repository.BaseRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class PMCommonService<T, ID> {
+
+	@Autowired
+	private final BaseRepository<T, ID> commonService;
+
+	public int saveTransactions(Class<T>clazz,Object object) {
+		
+		return 0;
+	}
+	
+	
+	private Object mappedDtoToDatabaseEntity(PushEnrollmentDetailsDto detailsDto){
+		
+		if("PMJJBY".equals(detailsDto.getSchemeName())){
+			
+		}
+		
+		return null;
+	}
+	
+	
+//	private String checkAgency() {
+//		
+//	}
+}

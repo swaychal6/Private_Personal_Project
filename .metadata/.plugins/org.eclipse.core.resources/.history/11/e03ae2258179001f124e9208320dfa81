@@ -1,0 +1,10 @@
+package com.pm.jns.service;
+
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.repository.CommonBaseRepoImpl;
+
+@Service
+public abstract class PMCommonService<T,ID> implements CommonBaseRepoImpl<T, ID> {
+
+}

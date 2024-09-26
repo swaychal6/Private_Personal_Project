@@ -1,0 +1,26 @@
+package com.pm.jns.service;
+
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.dto.requestdto.CustomerExistDto;
+import com.pm.jns.repository.CommonBaseRepoImpl;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class PMCommonService<T,K>{
+
+	
+	private final CommonBaseRepoImpl<T, K> baseRepoImpl;
+	
+	public T getcusomerDetails(CustomerExistDto dto) {
+		T customerDetails = baseRepoImpl.getCustomerDetails(dto.getCifCode(), dto.getCustomerAcc(), dto.getBankCode());
+		
+		if(null!=customerDetails) {
+			return customerDetails;
+		}
+		return null;
+	}
+	
+}

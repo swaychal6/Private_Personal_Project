@@ -1,0 +1,21 @@
+package com.jansuraksha.dto.updateAcstatusDto;
+
+import com.jansuraksha.dto.GetCustomerDetailDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString(callSuper = true)
+public class UpdateAcStatusFrontendReq extends GetCustomerDetailDto {
+
+	private String policyStatus;
+
+	private String reasonOfClosure;
+
+}

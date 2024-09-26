@@ -1,0 +1,22 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
+public interface BaseRepository<T,ID> extends JpaRepository<T, ID>{
+
+//	T findByCustomerDetails_CifAndCustomerDetails_BankCodeAndCustomerDetails_Agency(String cif,String bankCode,String scheme);
+	
+	default T saveDetails(T t) {
+		T save = this.save(t);
+		return save;
+	}
+	
+	default int getCustomerDetails() {
+//		this.ffindBy
+		return 0;
+	}
+	
+}
+	

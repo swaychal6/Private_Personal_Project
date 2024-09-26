@@ -1,0 +1,63 @@
+package com.mainController;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.CBSUtil.Rural_CBSUtilAPY;
+import com.DBTranDAO.DatabaseMaster;
+import com.pojo.APY_MASTER_TRANSACTIONS;
+
+public class APYController {
+	private static final Logger logger = Logger.getLogger(APYController.class);
+	boolean isDone = false;
+	DatabaseMaster databaseMaster = new DatabaseMaster();
+	Rural_CBSUtilAPY rural_CBSUtilAPY = new Rural_CBSUtilAPY();
+
+	void mainFlow(String frequency) {
+
+		List<String> banks = databaseMaster.getBanks();
+
+		for (String bank : banks) {
+
+			logger.debug("Starting transaction for bank: " + bank);
+			List<APY_MASTER_TRANSACTIONS> list = databaseMaster.getApyMasterTransactions(bank, frequency);
+
+			if (!list.isEmpty()) {
+				
+//		        for (int i = 0; i < list.size(); i += 100) {
+		        	
+//		            List<APY_MASTER_TRANSACTIONS> batch = list.subList(i, Math.min(i + 100, list.size()));		            
+		            
+					for (APY_MASTER_TRANSACTIONS apy_MASTER_TRANSACTIONS : list) {
+						logger.debug("Pran:-" + apy_MASTER_TRANSACTIONS.getPRAN_NO() + " SI_DATE:-"
+								+ apy_MASTER_TRANSACTIONS.getSI_DATE() + " AND PAID_UPTO_DATE:-"
+								+ apy_MASTER_TRANSACTIONS.getPAID_UPTO_DATE());
+
+						APY_MASTER_TRANSACTIONS APY_PRAN = databaseMaster
+								.getRevisedPenaltyCount(apy_MASTER_TRANSACTIONS);
+						isDone = rural_CBSUtilAPY.prepareCBSString(APY_PRAN, frequency);
+						if (isDone) {
+							logger.debug("APY SI FOR PRAN:" + apy_MASTER_TRANSACTIONS.getPRAN_NO() + " is Completed.");
+						} else {
+							logger.debug("APY SI FOR PRAN:" + apy_MASTER_TRANSACTIONS.getPRAN_NO() + " is Failed.");
+						}
+					}
+//					  list.removeAll(batch);
+//					  i-=100;
+				}
+			}
+			
+//		}
+	}
+
+	public static void main(String[] args) {
+		APYController obj1 = new APYController();
+		obj1.mainFlow("M");
+		System.gc();
+		obj1.mainFlow("Q");
+		obj1.mainFlow("H");
+
+		logger.debug("Program Completed...");
+	}
+}

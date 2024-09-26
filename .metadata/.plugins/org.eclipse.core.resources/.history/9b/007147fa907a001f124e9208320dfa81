@@ -1,0 +1,8 @@
+package com.pm.jns.repository;
+
+import com.pm.jns.entity.PM_JNS_SBI_TRANSACTIONS;
+
+public abstract class PmJnsSbiTransactionsRepository implements BaseRepository<PM_JNS_SBI_TRANSACTIONS, Long> {
+
+	
+}

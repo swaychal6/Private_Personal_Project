@@ -1,0 +1,42 @@
+package com.pm.jns.service;
+
+import org.springframework.stereotype.Service;
+
+import com.pm.jns.PmJnsDiyApplication;
+import com.pm.jns.dto.requestdto.PushEnrollmentDetailsDto;
+import com.pm.jns.repository.BaseRepository;
+
+import jakarta.validation.constraints.NotNull;
+
+@Service
+//@RequiredArgsConstructor
+public class PMCommonService<T, ID> {
+
+	private BaseRepository<T, ID> baseRepo;
+
+	public int saveTransactions(Class<T> clazz, Object object) {
+
+		return 0;
+	}
+
+	private Object mappedDtoToDatabaseEntity(PushEnrollmentDetailsDto detailsDto) {
+
+		String checkAgency = this.checkAgency(detailsDto.getBankCode(), detailsDto.getSchemeName());
+		if ("PMJJBY".equals(detailsDto.getSchemeName())) {
+
+		}
+
+		return null;
+	}
+
+	private String checkAgency(@NotNull String bankName, @NotNull String scheme) {
+		if ("PMJJBY".equals(scheme)) {
+			return PmJnsDiyApplication.fetch.stream().filter(t -> t.getBANKSHORTNAME().equals(bankName))
+					.map(t -> t.getPMJJBY().substring(0, 3)).findFirst().get();
+
+		} else {
+			return PmJnsDiyApplication.fetch.stream().filter(t -> t.getBANKSHORTNAME().equals(bankName))
+					.map(t -> t.getPMSBY().substring(0,3)).findFirst().get();
+		}
+	}
+}

@@ -1,0 +1,12 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CommonBaseRepoImpl<T,K> extends CommonBaseRepository<T>,JpaRepository<T, K>{
+
+	default T getCustomerDetails(String table,String cifCode, String customerAcc,String bankCode) {
+		return this.getCustomerDetailsByCustomerAccAndCif(table, cifCode, customerAcc, bankCode);
+	}
+	
+	
+}

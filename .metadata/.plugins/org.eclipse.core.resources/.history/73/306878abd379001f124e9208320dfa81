@@ -1,0 +1,22 @@
+//package com.pm.jns.repository;
+//
+//import org.springframework.data.jpa.repository.JpaRepository;
+//import org.springframework.data.jpa.repository.Query;
+//import org.springframework.data.repository.query.Param;
+//import org.springframework.stereotype.Repository;
+//
+//
+//@Repository
+//public interface CommonBaseRepository<T,K> extends JpaRepository<T, K>
+//{
+//
+//	
+//    @Query(value = "SELECT * FROM :tableName WHERE cif_code = :cifCode AND customer_acc_number = :customerAcc AND bank_code = :bankCode", nativeQuery = true)
+//    T getCustomerDetailsByCustomerAccAndCif(
+//            @Param("tableName") String tableName,
+//            @Param("cifCode") String cifCode,
+//            @Param("customerAcc") String customerAcc,
+//            @Param("bankCode") String bankCode);
+//    
+//	
+//}

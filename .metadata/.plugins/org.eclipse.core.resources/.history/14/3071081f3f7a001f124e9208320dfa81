@@ -1,0 +1,53 @@
+package com.pm.jns.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "Other_details")
+public class OtherDetailsEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotNull
+	@Pattern(regexp = "^Yes$", message = "Consent for auto debit must be 'Yes'")
+	@Column(name = "consent_for_auto_debit", nullable = false)
+	private String consentForAutoDebit;
+
+	@Size(min = 1, max = 255)
+	@Column(name = "user_id_2")
+	private String userId2;
+
+	@NotNull
+	@Pattern(regexp = "^(PMSBY|PMJJBY)$", message = "Scheme name must be PMSBY or PMJJBY")
+	@Column(name = "scheme_name", nullable = false)
+	private String schemeName;
+
+	@NotNull
+	@Size(min = 1, max = 50)
+	@Pattern(regexp = "^(BC|ATM|MB|EB|SMS|WHATSAPP|BRANCH|TAB|CSP|WEBSITE|MISSCALL|DBU)$", message = "Invalid channel ID")
+	@Column(name = "channel_id", nullable = false)
+	private String channelId;
+
+	@NotNull
+	@Column(name = "user_id_1", nullable = false)
+	private String userId1;
+	
+}

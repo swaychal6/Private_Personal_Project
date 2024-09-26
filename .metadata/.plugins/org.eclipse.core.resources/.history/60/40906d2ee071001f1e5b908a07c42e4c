@@ -1,0 +1,78 @@
+package com.jansuraksha.services;
+
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import com.jansuraksha.APIresponse.dto.EnrollmentDetailsResponse;
+import com.jansuraksha.api_utility.JanSurakshaAPICommonUtility;
+import com.jansuraksha.daoImpl.CommonRepoDaoImpl;
+import com.jansuraksha.enrollmentJansuraksha.dto.EnrollmentRequestDto;
+import com.jansuraksha.entity.SBI_PMJJBY_TRANSACTIONS;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class PmjjbySBIService{
+
+	private static final Logger logger = LogManager.getLogger(PmjjbySBIService.class);
+
+	private final JanSurakshaAPICommonUtility apiCallingUtility;
+	
+	private final CommonRepoDaoImpl<SBI_PMJJBY_TRANSACTIONS> commonRepoDaoImpl;
+
+	public void prepareEnrollmentRequestSBI(String bankCode) {
+
+		List<EnrollmentRequestDto> sbiTransactionDetails = commonRepoDaoImpl.getAllTransactionDetails(SBI_PMJJBY_TRANSACTIONS.class,
+				bankCode);
+
+		sbiTransactionDetails.stream().forEach(t -> {
+			try {
+				this.responseEnrollmentDetails(t,bankCode);
+			} catch (Exception e) {
+				logger.error("");
+			}
+		});
+
+	}
+
+	private boolean responseEnrollmentDetails(EnrollmentRequestDto dto,String bankCode) {
+		boolean getAPIdetails=false;
+		EnrollmentDetailsResponse enrollmentResponseJNS=null;
+		try {
+			 enrollmentResponseJNS = apiCallingUtility
+					.enrollmentDetailsJansuraskhaAPI(dto);
+
+			if (enrollmentResponseJNS != null && 200 == enrollmentResponseJNS.getStatus()) {
+				int updateTransactions = commonRepoDaoImpl.updateTransactions
+				(SBI_PMJJBY_TRANSACTIONS.class,enrollmentResponseJNS,
+						dto.getCustomerDetails().getAccountNumber(),
+						dto.getCustomerDetails().getCif(), bankCode);
+				
+				if(updateTransactions>0) {
+					logger.info(updateTransactions+": row Updated ");
+					getAPIdetails=true;
+				}
+			}else if (503==enrollmentResponseJNS.getStatus()) {
+				int updateTransactions = commonRepoDaoImpl.updateTransactions
+						(SBI_PMJJBY_TRANSACTIONS.class,enrollmentResponseJNS,
+								dto.getCustomerDetails().getAccountNumber(),
+								dto.getCustomerDetails().getCif(), bankCode);
+						
+						if(updateTransactions>0) {
+							logger.info(updateTransactions+": row Updated for Re-Attempt");
+							getAPIdetails=false;
+						}
+			}
+		} catch (Exception e) {
+			logger.error("");
+		}
+		return getAPIdetails;
+	}
+	
+	
+}

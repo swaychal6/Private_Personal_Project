@@ -1,0 +1,13 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.pm.jns.entity.CustomerDetailsEntity;
+
+public interface CustomerDetailsRepo extends JpaRepository<CustomerDetailsEntity, Long> {
+
+	default int customerExist(String bankcode,String cif,String agency) {
+		this.findByCifAndAgencyAndBankCode(cif,agency,bankcode);
+		return 0;
+	}
+}

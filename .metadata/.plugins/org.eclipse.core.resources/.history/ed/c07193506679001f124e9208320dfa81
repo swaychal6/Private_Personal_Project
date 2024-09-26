@@ -1,0 +1,36 @@
+package com.pm.jns.entity;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
+
+@MappedSuperclass
+@Getter
+@Setter
+public abstract class BaseEntity<K>{
+
+	@Id
+	@Column(name = "CIF_CODE")
+	private K cifCode;
+	
+	@Column(name = "CUSTOMER_ACC_NUMBER")
+	private String customerAcc;
+	
+	@Column(name = "BANK_CODE")
+	private String bankCode;
+	
+	@Column(name = "SCHEME")
+	private String scheme;
+	
+	@Column(name = "ENROLLMENT_TXN_TIME")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private String enrollmentTxnTime;
+	
+	@Column(nullable = true, length = 50)
+	private String POLICY_STATUS;
+}

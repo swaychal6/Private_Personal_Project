@@ -1,0 +1,13 @@
+#DBURL=jdbc:oracle:thin:@10.1.23.44:1521:xe
+#DBUSERNAME=bancslink
+#DBPASSWORD=frontdb
+
+DBURL=jdbc:oracle:thin:@10.43.1.204:1531:pmidb
+DBUSERNAME=bancslink
+DBPASSWORD=bancslink_123
+
+#####Testing
+#####Testing
+#DBURL=jdbc:oracle:thin:@10.43.49.33:1521:xe
+#DBUSERNAME=localdb
+#DBPASSWORD=localdb

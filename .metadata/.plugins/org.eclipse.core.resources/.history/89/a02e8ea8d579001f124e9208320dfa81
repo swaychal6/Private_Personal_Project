@@ -1,0 +1,6 @@
+package com.pm.jns.repository;
+
+public interface CommonRepository<T,K> {
+
+	T getCustomerDetails(String bankCode,String cifCode,String scheme);
+}

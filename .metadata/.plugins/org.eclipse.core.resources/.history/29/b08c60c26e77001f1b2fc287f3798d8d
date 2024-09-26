@@ -1,0 +1,151 @@
+package com.jansuraksha.api_utility;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.jansuraksha.config.ApplicationConfig;
+import com.jansuraksha.dto.encryptdecryptDto.DecryptDtoResponse;
+import com.jansuraksha.dto.encryptdecryptDto.EncryptDtoRequest;
+import com.jansuraksha.dto.encryptdecryptDto.EncryptDtoResponse;
+import com.jansuraksha.dto.enrollmentJansurakshaDto.EnrollmentDetailsResponse;
+import com.jansuraksha.dto.enrollmentJansurakshaDto.EnrollmentRequestDto;
+import com.jansuraksha.dto.updatetranJansurakshaDto.UpdateTransactionDetailsRequest;
+import com.jansuraksha.dto.updatetranJansurakshaDto.UpdateTransactionDetailsResponse;
+import com.jansuraksha.utils.EntityMapper;
+import com.jansuraksha.utils.encryptdecrpt.DecryptionUtil;
+import com.jansuraksha.utils.encryptdecrpt.EncryptionUtil;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class JanSurakshaAPICommonUtility {
+
+	private static final Logger logger = LogManager.getLogger(JanSurakshaAPICommonUtility.class);
+
+	private final WebClient webClient;
+
+	
+	public JanSurakshaAPICommonUtility(WebClient.Builder builder) {
+		this.webClient = builder.build();
+	}
+
+	@Async
+	public EnrollmentDetailsResponse enrollmentDetailsJansuraskhaAPI(EnrollmentRequestDto enrollRequest) throws InvalidKeyException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeySpecException, SignatureException, UnsupportedEncodingException, NoSuchProviderException{
+
+		EncryptionUtil encryptionUtil=new EncryptionUtil();
+		DecryptionUtil decryptionUtil=new DecryptionUtil();
+		EnrollmentDetailsResponse enrollmntDetailResponse=null;
+		EncryptDtoRequest encryptRequest = new EncryptDtoRequest() ;
+		EncryptDtoResponse encryptDtoResponse=new EncryptDtoResponse();
+		DecryptDtoResponse decryptDtoResponse=new DecryptDtoResponse();
+		
+		try {
+		String encrypt = encryptionUtil.encrypt(enrollRequest.toString(), ApplicationConfig.getProperty("privateKey"), ApplicationConfig.getProperty("publicKey"));
+		encryptRequest.setMeta_data(encrypt);
+		}catch(Exception e) {
+			logger.error("Got error while encrypting the request for enrollmentDetailsJansuraskhaAPI API:"+e.getMessage());
+		}
+		
+		
+		logger.info("Enrollment Request Sent to JanSuraksha:"+enrollRequest.toString());
+		try {
+		
+		encryptDtoResponse = webClient.post()
+		.uri("")
+		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+		.header("user-name", "")
+		.header("api-key", "")
+		.bodyValue(encryptRequest)
+		.retrieve()
+		.bodyToMono(EncryptDtoResponse.class)
+		.block();
+		 
+		decryptDtoResponse.setMeta_data(encryptDtoResponse.getMeta_data());
+		 
+		String decrypt=decryptionUtil.decrypt(decryptDtoResponse.getMeta_data(),ApplicationConfig.getProperty("privateKey"), ApplicationConfig.getProperty("publicKey"));
+		 
+		 enrollmntDetailResponse = EntityMapper.mapJsonToEntity(decrypt, EnrollmentDetailsResponse.class);
+		 
+		}catch(Exception e ) {
+			logger.error("Getting error in Enrollment request API response"+e.getMessage());
+			enrollmntDetailResponse.setMessage("REATTEMPT");
+			enrollmntDetailResponse.setStatus(503);
+		}
+		logger.info("Enrollment Response from JanSuraksha:"+enrollmntDetailResponse.toString());
+		return enrollmntDetailResponse;
+	}
+	
+	@Async
+	public UpdateTransactionDetailsResponse updateJansurakshaTransactionDetails(UpdateTransactionDetailsRequest request) throws InvalidKeyException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeySpecException, SignatureException, UnsupportedEncodingException, NoSuchProviderException {
+		logger.info("Update Request Sent to JanSuraksha:"+request.toString());
+		UpdateTransactionDetailsResponse responseUpdateTransactions=null;
+		EncryptionUtil encryptionUtil=new EncryptionUtil();
+		DecryptionUtil decryptionUtil=new DecryptionUtil();
+		EncryptDtoRequest encryptRequest = new EncryptDtoRequest() ;
+		EncryptDtoResponse encryptDtoResponse = new EncryptDtoResponse();
+		DecryptDtoResponse decryptDtoResponse=new DecryptDtoResponse();
+		
+		try {
+		String encrypt = encryptionUtil
+				 .encrypt(request.toString(), ApplicationConfig.getProperty("privateKey")
+						 , ApplicationConfig.getProperty("publicKey"));
+		 encryptRequest.setMeta_data(encrypt);
+		}catch(Exception e) {
+			logger.error("Got error while encrypting the request for UpdateTransactionDetailsRequest API:"+e.getMessage());
+		}
+		
+		
+		try {
+		encryptDtoResponse = webClient.post()
+		.uri("")
+		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+		.header("user-name", "")
+		.header("api-key", "")
+		.bodyValue(encryptRequest)
+		.retrieve()
+		.bodyToMono(EncryptDtoResponse.class)
+		.block();
+			
+			try {
+			 String decrypt=decryptionUtil
+					  .decrypt(encryptDtoResponse.getMeta_data(),ApplicationConfig.getProperty("privateKey"),
+							  ApplicationConfig.getProperty("publicKey"));
+			 
+			 decryptDtoResponse.setMeta_data(decrypt);
+			}catch(Exception e) {
+				logger.error("Got error while decrypting the response for UpdateTransactionDetailsResponse:"+e.getMessage());
+			}
+			 responseUpdateTransactions = EntityMapper.mapJsonToEntity(decryptDtoResponse.getMeta_data(), UpdateTransactionDetailsResponse.class);
+		 
+		 logger.info("Enrollment Response from JanSuraksha:"+responseUpdateTransactions.toString());
+		}catch(Exception e ) {
+			logger.error("Getting error in Enrollment request API response"+e.getMessage());
+			responseUpdateTransactions.setSuccess(false);
+			responseUpdateTransactions.setStatus(999);
+		}
+		
+		return responseUpdateTransactions;
+	}
+	
+	
+
+}

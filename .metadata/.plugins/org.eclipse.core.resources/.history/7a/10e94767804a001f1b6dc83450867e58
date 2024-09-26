@@ -1,0 +1,500 @@
+package com.DBTranDAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import com.CBSUtil.DateMaster;
+import com.CBSUtil.PropertyMaster;
+import com.pojo.APY_MASTER_TRANSACTIONS;
+import com.pojo.ResponseFile;
+
+import oracle.jdbc.pool.OracleDataSource;
+
+public class DatabaseMaster {
+	private final static Logger logger = Logger.getLogger(DatabaseMaster.class);
+
+	public static Connection getConnection() {
+		Connection connection = null;
+//		Properties properties = new Properties();
+		OracleDataSource oracleDataSource = null;
+		boolean connObj = false;
+		int dbcheckCounter = 0;
+		do {
+			try {
+
+				if (dbcheckCounter > 1) {
+					logger.info("Thread is Sleeping for 30sec");
+					logger.info("DB Check Counter -" + dbcheckCounter);
+					Thread.sleep(30000);
+
+				}
+
+				connObj = false;
+//				properties.load(PropertyMaster.getDatabaseProperty());
+				oracleDataSource = new OracleDataSource();
+//				oracleDataSource.setURL(properties.getProperty("DBURL"));
+				oracleDataSource.setURL(PropertyMaster.getDbProperties().getProperty("DBURL").trim());
+				oracleDataSource.setUser(PropertyMaster.getDbProperties().getProperty("DBUSERNAME").trim());
+				oracleDataSource.setPassword(PropertyMaster.getDbProperties().getProperty("DBPASSWORD").trim());
+				connection = oracleDataSource.getConnection();
+
+			} catch (Exception e) {
+				if (connection == null) {
+					dbcheckCounter++;
+					logger.error("connection is null =:", e);
+					connObj = true;
+					logger.error("Exception =:", e);
+				}
+			}
+		} while (connObj);
+		return connection;
+	}
+
+	public List<APY_MASTER_TRANSACTIONS> getApyMasterTransactions(String bank, String frequency) {
+		List<APY_MASTER_TRANSACTIONS> list = new ArrayList<APY_MASTER_TRANSACTIONS>();
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			String sql = null;
+			logger.debug("SI Frequency is - " + frequency);
+			if (DateMaster.getMaxDayfromMonth()) {
+				sql = "Select  * from APY_MASTER_TRANSACTIONS  WHERE  BANK_CODE=" + bank + " AND FREQUENCY='"
+						+ frequency
+						+ "' AND upper(policy_status)='ACTIVE' AND (PAID_UPTO_DATE <> '0' AND trunc(to_date(PAID_UPTO_DATE,'MM/YYYY')) < trunc(to_date(to_char(sysdate,'MM/YYYY'), 'MM/YYYY')) "
+						+ " and trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')) <= trunc(sysdate)"
+						+ " and trunc(sysdate) < trunc(to_date(DOB, 'DD/MM/YYYY')+ interval '60' year))"
+						+ "	 OR (BANK_CODE=" + bank + "   AND FREQUENCY='" + frequency
+						+ "' AND upper(policy_status)='ACTIVE' AND TO_NUMBER(PENALITY_INST_COUNT) > 0 "
+						+ " and trunc(sysdate) < trunc(to_date(DOB, 'DD/MM/YYYY')+ interval '60' year) "
+						+ " and trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')) <= trunc(sysdate))";
+			} else {
+				sql = "Select  * from APY_MASTER_TRANSACTIONS  WHERE  BANK_CODE=" + bank + " AND FREQUENCY='"
+						+ frequency
+						+ "' AND upper(policy_status)='ACTIVE' AND (PAID_UPTO_DATE <> '0' AND trunc(to_date(PAID_UPTO_DATE,'MM/YYYY')) < trunc(to_date(to_char(sysdate,'MM/YYYY'), 'MM/YYYY')) "
+						+ " and trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')) <= trunc(sysdate)"
+						+ " and to_number(to_char(trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')),'DD')) <= to_number(to_char(trunc(sysdate),'DD'))"
+						+ " and trunc(sysdate) < trunc(to_date(DOB, 'DD/MM/YYYY')+ interval '60' year))"
+						+ "	 OR (BANK_CODE=" + bank + "   AND FREQUENCY='" + frequency
+						+ "' AND upper(policy_status)='ACTIVE' AND TO_NUMBER(PENALITY_INST_COUNT) > 0 "
+						+ " and trunc(sysdate) < trunc(to_date(DOB, 'DD/MM/YYYY')+ interval '60' year) "
+						+ " and trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')) <= trunc(sysdate)"
+						+ " and to_number(to_char(trunc(TO_DATE(SI_DATE,'DD/MM/YYYY')),'DD')) <= to_number(to_char(trunc(sysdate),'DD')))";
+			}
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				APY_MASTER_TRANSACTIONS apy_MASTER_TRANSACTIONS = new APY_MASTER_TRANSACTIONS();
+				apy_MASTER_TRANSACTIONS.setTXN_ID(resultSet.getString("TXN_ID"));
+				apy_MASTER_TRANSACTIONS.setBRANCH_CODE(resultSet.getString("BRANCH_CODE"));
+				apy_MASTER_TRANSACTIONS.setCUSTOMER_ACC_NUMBER(resultSet.getString("CUSTOMER_ACC_NUMBER"));
+				apy_MASTER_TRANSACTIONS.setCONTRIBUTION_AMT(resultSet.getString("CONTRIBUTION_AMT"));
+				apy_MASTER_TRANSACTIONS.setOVERDUEAMOUNT(resultSet.getString("OVERDUEAMOUNT"));
+				apy_MASTER_TRANSACTIONS.setNARRATIVE(resultSet.getString("NARRATIVE"));
+				apy_MASTER_TRANSACTIONS.setBANK_CODE(resultSet.getString("BANK_CODE"));
+				apy_MASTER_TRANSACTIONS.setTELLER_ID(resultSet.getString("TELLER_ID"));
+				apy_MASTER_TRANSACTIONS.setTRAN_NUMBER(resultSet.getString("TRAN_NUMBER"));
+				apy_MASTER_TRANSACTIONS.setSI_DATE(resultSet.getString("SI_DATE"));
+				apy_MASTER_TRANSACTIONS.setSUPERVISORID(resultSet.getString("SUPERVISORID"));
+				apy_MASTER_TRANSACTIONS.setCOMPANY_ACC_NUMBER(resultSet.getString("COMPANY_ACC_NUMBER"));
+				apy_MASTER_TRANSACTIONS.setPENALITY_CHARGE(resultSet.getString("PENALITY_CHARGE"));
+				apy_MASTER_TRANSACTIONS.setPENALITY_INST_COUNT(resultSet.getString("PENALITY_INST_COUNT"));
+				apy_MASTER_TRANSACTIONS.setNO_OF_INST_RECD(resultSet.getString("NO_OF_INST_RECD"));
+				apy_MASTER_TRANSACTIONS.setCOMMISSION_AMT(resultSet.getString("COMMISSION_AMT"));
+				apy_MASTER_TRANSACTIONS.setPAID_UPTO_DATE(resultSet.getString("PAID_UPTO_DATE"));
+				apy_MASTER_TRANSACTIONS.setCURR_STATUS(resultSet.getString("POLICY_STATUS"));
+				apy_MASTER_TRANSACTIONS.setPENALITY_INST_COUNT(resultSet.getString("PENALITY_INST_COUNT"));
+				apy_MASTER_TRANSACTIONS.setCIF_CODE(resultSet.getString("CIF_CODE"));
+				apy_MASTER_TRANSACTIONS.setPRAN_NO(resultSet.getString("PRAN_NO"));
+				apy_MASTER_TRANSACTIONS.setFREQUENCY(resultSet.getString("FREQUENCY"));
+				apy_MASTER_TRANSACTIONS.setDOB(resultSet.getString("DOB"));
+				apy_MASTER_TRANSACTIONS.setPENALTY_COUNT_UPDATED_ON(resultSet.getString("PENALTY_COUNT_UPDATED_ON"));
+				list.add(apy_MASTER_TRANSACTIONS);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException =:", e);
+
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (preparedStatement != null)
+					preparedStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				logger.error("Exception =:", e);
+			}
+		}
+		return list;
+	}
+
+	public static boolean getNSDLHOLIDAY(String date1) {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = null;
+		boolean flag = false;
+		try {
+			connection = getConnection();
+			String sql = "select * from APY_NSDL_HOLIDAY where DATE_1=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, date1);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next())
+				flag = true;
+		} catch (Exception e) {
+			logger.error("Exception =:", e);
+			logger.debug("Database Failure");
+			System.exit(0);
+		}
+		return flag;
+	}
+
+	public boolean insertIntoContribution(APY_MASTER_TRANSACTIONS apy_MASTER_TRANSACTIONS, String frequency) {
+
+		boolean isDone = false;
+		PreparedStatement preparedStatement = null;
+		Connection connection = null;
+		try {
+			String sql = "INSERT INTO  APY_CONTRIBUTION (BANK_CODE, BRANCH_CODE, SCHEME_CODE, ACCOUNT_NO, TRANSACTION_DATE,"
+					+ " JOURNAL_NO, PRAN, TRANSACTION_TYPE, OVER_DUE, TOTAL_CONTRIBUTION, CONTRIBUTION_TYPE, CONTRIBUTION_MONTH,"
+					+ " CONTRIBUTION_YEAR, TELLER_NO, CIF_CODE, LAST_MODIFIED, ERROR_MESSAGE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, apy_MASTER_TRANSACTIONS.getBANK_CODE());
+			preparedStatement.setString(2, apy_MASTER_TRANSACTIONS.getBRANCH_CODE());
+			preparedStatement.setString(3, "APY");
+			preparedStatement.setString(4, apy_MASTER_TRANSACTIONS.getCUSTOMER_ACC_NUMBER());
+			preparedStatement.setString(5, DateMaster.getCurrentDate());
+			preparedStatement.setString(6, apy_MASTER_TRANSACTIONS.getJOURNAL_NUMBER());
+			preparedStatement.setString(7, apy_MASTER_TRANSACTIONS.getPRAN_NO());
+			preparedStatement.setString(8, apy_MASTER_TRANSACTIONS.getOutputType());
+			preparedStatement.setString(9, apy_MASTER_TRANSACTIONS.getOVERDUEAMOUNT());
+			preparedStatement.setString(10, apy_MASTER_TRANSACTIONS.getCONTRIBUTION_AMT());
+			if (frequency.equalsIgnoreCase("M"))
+				preparedStatement.setString(11, "C");
+			else if (frequency.equalsIgnoreCase("Q"))
+				preparedStatement.setString(11, "Q");
+			else if (frequency.equalsIgnoreCase("H"))
+				preparedStatement.setString(11, "H");
+			else
+				preparedStatement.setString(11, "C");
+			preparedStatement.setString(12, apy_MASTER_TRANSACTIONS.getCONTRIBUTION_MONTH());
+			preparedStatement.setString(13, apy_MASTER_TRANSACTIONS.getCONTRIBUTION_YEAR());
+			preparedStatement.setString(14, apy_MASTER_TRANSACTIONS.getTELLER_ID());
+			preparedStatement.setString(15, apy_MASTER_TRANSACTIONS.getCIF_CODE());
+			preparedStatement.setTimestamp(16, new java.sql.Timestamp(System.currentTimeMillis()));
+			preparedStatement.setString(17, apy_MASTER_TRANSACTIONS.getErrorMessage());
+
+			int i = preparedStatement.executeUpdate();
+			if (i > 0) {
+				isDone = true;
+			}
+			logger.debug(
+					"Insert Query-->INSERT INTO   APY_CONTRIBUTION (BANK_CODE, BRANCH_CODE, SCHEME_CODE, ACCOUNT_NO, TRANSACTION_DATE, JOURNAL_NO, PRAN, TRANSACTION_TYPE,"
+							+ " OVER_DUE, TOTAL_CONTRIBUTION, CONTRIBUTION_TYPE, CONTRIBUTION_MONTH, CONTRIBUTION_YEAR, TELLER_NO, CIF_CODE,"
+							+ " LAST_MODIFIED, ERROR_MESSAGE) values (" + apy_MASTER_TRANSACTIONS.getBANK_CODE() + ","
+							+ apy_MASTER_TRANSACTIONS.getBRANCH_CODE() + ",APY,"
+							+ apy_MASTER_TRANSACTIONS.getCUSTOMER_ACC_NUMBER() + "," + DateMaster.getCurrentDate() + ","
+							+ apy_MASTER_TRANSACTIONS.getJOURNAL_NUMBER() + "," + apy_MASTER_TRANSACTIONS.getPRAN_NO()
+							+ "," + apy_MASTER_TRANSACTIONS.getOutputType() + ","
+							+ apy_MASTER_TRANSACTIONS.getOVERDUEAMOUNT() + ","
+							+ apy_MASTER_TRANSACTIONS.getCONTRIBUTION_AMT() + "," + frequency + ","
+							+ apy_MASTER_TRANSACTIONS.getCONTRIBUTION_MONTH() + ","
+							+ apy_MASTER_TRANSACTIONS.getCONTRIBUTION_YEAR() + ","
+							+ apy_MASTER_TRANSACTIONS.getTELLER_ID() + "," + apy_MASTER_TRANSACTIONS.getCIF_CODE() + ","
+							+ new java.sql.Timestamp(System.currentTimeMillis()) + ","
+							+ apy_MASTER_TRANSACTIONS.getErrorMessage() + ")");
+		} catch (Exception e) {
+			logger.error("Exception =:", e);
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				logger.error("Exception =:", e);
+			}
+		}
+		return isDone;
+	}
+
+	public boolean updateApyMasterTransactions(APY_MASTER_TRANSACTIONS apy_MASTER_TRANSACTIONS) {
+		boolean isDone = false;
+		PreparedStatement preparedStatement = null;
+		Connection connection = null;
+		try {
+
+			String sql = "UPDATE APY_MASTER_TRANSACTIONS set PENALITY_CHARGE =?, PENALITY_INST_COUNT= ?, NO_OF_INST_RECD=?, PAID_UPTO_DATE=?, POLICY_STATUS =?,PENALTY_COUNT_UPDATED_ON=? where CUSTOMER_ACC_NUMBER = ? and CIF_CODE =?";
+
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, apy_MASTER_TRANSACTIONS.getPENALITY_CHARGE());
+			preparedStatement.setString(2, apy_MASTER_TRANSACTIONS.getPENALITY_INST_COUNT());
+			preparedStatement.setString(3, apy_MASTER_TRANSACTIONS.getNO_OF_INST_RECD());
+			preparedStatement.setString(4, apy_MASTER_TRANSACTIONS.getPAID_UPTO_DATE());
+			preparedStatement.setString(5, apy_MASTER_TRANSACTIONS.getCURR_STATUS());
+			preparedStatement.setString(6, apy_MASTER_TRANSACTIONS.getPENALTY_COUNT_UPDATED_ON());
+			preparedStatement.setString(7, apy_MASTER_TRANSACTIONS.getCUSTOMER_ACC_NUMBER());
+			preparedStatement.setString(8, apy_MASTER_TRANSACTIONS.getCIF_CODE());
+//			preparedStatement.setString(9, apy_MASTER_TRANSACTIONS.getBANK_CODE());
+//			preparedStatement.setString(10, apy_MASTER_TRANSACTIONS.getPRAN_NO());
+
+			
+
+			int i = preparedStatement.executeUpdate();
+			logger.debug("Update Query -->UPDATE APY_MASTER_TRANSACTIONS set PENALITY_CHARGE ="
+					+ apy_MASTER_TRANSACTIONS.getPENALITY_CHARGE() + "" + ", PENALITY_INST_COUNT="
+					+ apy_MASTER_TRANSACTIONS.getPENALITY_INST_COUNT() + ", NO_OF_INST_RECD="
+					+ apy_MASTER_TRANSACTIONS.getNO_OF_INST_RECD() + ", PAID_UPTO_DATE="
+					+ apy_MASTER_TRANSACTIONS.getPAID_UPTO_DATE() + ", POLICY_STATUS ="
+					+ apy_MASTER_TRANSACTIONS.getCURR_STATUS() + " PENALTY_COUNT_UPDATED_ON="
+					+ apy_MASTER_TRANSACTIONS.getPENALTY_COUNT_UPDATED_ON() + " where CUSTOMER_ACC_NUMBER ="
+					+ apy_MASTER_TRANSACTIONS.getCUSTOMER_ACC_NUMBER() + " and CIF_CODE ="
+					+ apy_MASTER_TRANSACTIONS.getCIF_CODE()+" and BANK_CODE="
+					+apy_MASTER_TRANSACTIONS.getBANK_CODE() +" PRAN_NO="+apy_MASTER_TRANSACTIONS.getPRAN_NO());
+			logger.debug(i + "  row Updated");
+			if (i > 0) {
+				isDone = true;
+			}
+
+		} catch (Exception e) {
+			logger.debug("Error While Updating Records !!!!");
+			logger.debug("Update Query -->UPDATE APY_MASTER_TRANSACTIONS set PENALITY_CHARGE ="
+					+ apy_MASTER_TRANSACTIONS.getPENALITY_CHARGE() + "" + ", PENALITY_INST_COUNT="
+					+ apy_MASTER_TRANSACTIONS.getPENALITY_INST_COUNT() + ", NO_OF_INST_RECD="
+					+ apy_MASTER_TRANSACTIONS.getNO_OF_INST_RECD() + ", PAID_UPTO_DATE="
+					+ apy_MASTER_TRANSACTIONS.getPAID_UPTO_DATE() + ", POLICY_STATUS ="
+					+ apy_MASTER_TRANSACTIONS.getCURR_STATUS() + " PENALTY_COUNT_UPDATED_ON="
+					+ apy_MASTER_TRANSACTIONS.getPENALTY_COUNT_UPDATED_ON() + " where CUSTOMER_ACC_NUMBER ="
+					+ apy_MASTER_TRANSACTIONS.getCUSTOMER_ACC_NUMBER() + " and CIF_CODE ="
+					+ apy_MASTER_TRANSACTIONS.getCIF_CODE()+" and BANK_CODE="
+					+apy_MASTER_TRANSACTIONS.getBANK_CODE() +" PRAN_NO="+apy_MASTER_TRANSACTIONS.getPRAN_NO());
+			
+			logger.error("Exception =:", e);
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				logger.error("Exception =:", e);
+			}
+		}
+		return isDone;
+	}
+
+	public Map<Integer, Integer> getPenalityDetails() {
+		Map<Integer, Integer> penalityMap = new HashMap<Integer, Integer>();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			String sql = "SELECT * FROM APY_PENALITY_MASTER";
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				penalityMap.put(resultSet.getInt("AMOUNT"), resultSet.getInt("PENALITY_AMOUNT"));
+			}
+		} catch (Exception e) {
+			logger.error("Exception =:", e);
+		}
+		return penalityMap;
+	}
+
+	public boolean updateResponseApyMaster(List<ResponseFile> list) {
+		boolean isDone = false;
+		for (ResponseFile responseFile : list) {
+			PreparedStatement preparedStatement = null;
+			Connection connection = null;
+			try {
+				String sql = "UPDATE APY_MASTER_TRANSACTIONS SET POLICY_STATUS ='APPROVED' WHERE PRAN_NO =? AND CUSTOMER_ACC_NUMBER = ? and POLICY_STATUS = 'PENDING'";
+				connection = getConnection();
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, responseFile.getPran());
+				preparedStatement.setString(2, responseFile.getBankAccountNumber());
+				int i = preparedStatement.executeUpdate();
+				logger.debug(i + "  row Updated");
+				isDone = true;
+			} catch (Exception e) {
+				logger.error("Exception =:", e);
+			} finally {
+				try {
+					if (preparedStatement != null)
+						preparedStatement.close();
+					if (connection != null)
+						connection.close();
+				} catch (SQLException e) {
+					logger.error("Exception =:", e);
+				}
+			}
+		}
+		return isDone;
+	}
+
+	public boolean updateResponsePranMaster(List<ResponseFile> list) {
+		boolean isDone = false;
+		for (ResponseFile responseFile : list) {
+			PreparedStatement preparedStatement = null;
+			Connection connection = null;
+			try {
+				String sql = "UPDATE APY_PRAN_NOS SET STATUS ='ACTIVE', ACTIVE_DATE = ? WHERE PRAN_NO =? and STATUS = 'PENDING'";
+				connection = getConnection();
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, DateMaster.getCurrentDate());
+				preparedStatement.setString(2, responseFile.getPran());
+				int i = preparedStatement.executeUpdate();
+				logger.debug(i + "  row Updated");
+				isDone = true;
+			} catch (Exception e) {
+				logger.error("Exception =:", e);
+			} finally {
+				try {
+					if (preparedStatement != null)
+						preparedStatement.close();
+					if (connection != null)
+						connection.close();
+				} catch (SQLException e) {
+					logger.error("Exception =:", e);
+				}
+			}
+		}
+		return isDone;
+	}
+
+	public List<String> getBanks() {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = null;
+		List<String> list = new ArrayList<String>();
+		try {
+			connection = getConnection();
+
+			// String sql =
+			// "SELECT BANK_CODE FROM BANK_MASTER where bank_code not in
+			// ('35','101','102','103','1859','95','108','374','1645','27','96','1833','2213','99','1653','62','1664','61','59','1941')
+			// order by BANK_CODE desc";
+
+			// SYN_ARGB
+//			 String sql =
+//			 "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('101','1664') order by BANK_CODE desc";
+
+			// SYN
+//			 String sql =
+//			 "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('102') order by BANK_CODE desc";
+
+//			// APY_SI_RRB
+//			 String sql =
+//			 "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('61','96','99') order by BANK_CODE desc";
+
+			// APY_SI_RRB_2
+//			 String sql =
+//			 "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('2213','27','374','59') order by BANK_CODE desc";
+//			
+//			 APY_SI_RRB_1
+//			String sql = "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('108','1645','1653','1833','62','251') order by BANK_CODE desc";
+
+			// APY_APGVB
+			String sql = "SELECT BANK_CODE FROM BANK_MASTER  where bank_code in ('95') order by BANK_CODE desc";
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				list.add(resultSet.getString("BANK_CODE"));
+			}
+		} catch (Exception e) {
+
+			logger.debug("Error in getBanks()");
+			logger.error(e);
+		}
+
+		finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+
+		}
+		return list;
+
+	}
+
+	public APY_MASTER_TRANSACTIONS getRevisedPenaltyCount(APY_MASTER_TRANSACTIONS apy_MASTER_TRANSACTIONS) {
+
+		String paidUptoDate = apy_MASTER_TRANSACTIONS.getPAID_UPTO_DATE();
+		int year = 0;
+		int Penalty_inst = 0;
+		int new_penalty = 0;
+		int cur_year = Calendar.getInstance().get(Calendar.YEAR);
+		int cur_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		String strarray[] = paidUptoDate.split("/");
+		int PUD_month = Integer.parseInt(strarray[0]);
+		int PUD_year = Integer.parseInt(strarray[1]);
+		year = cur_year - PUD_year;
+		if (year == 0) {
+			Penalty_inst = (cur_month - PUD_month) - 1;
+		} else {
+			Penalty_inst = ((year - 1) * 12) + ((12 - PUD_month) - 1) + (cur_month);
+
+		}
+		new_penalty = Penalty_inst;
+		logger.debug("Pran:" + apy_MASTER_TRANSACTIONS.getPRAN_NO());
+		String strpreviousMonthMaxDay = DateMaster.getPreviousMonthMaxDay();
+		apy_MASTER_TRANSACTIONS.setPENALITY_INST_COUNT(Integer.toString(new_penalty));
+		apy_MASTER_TRANSACTIONS.setPENALTY_COUNT_UPDATED_ON(strpreviousMonthMaxDay);
+
+		return apy_MASTER_TRANSACTIONS;
+	}
+
+	public void insertCsvFile(String filename) {
+		Connection connection = null;
+		Statement stmt = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			System.out.println("Inserting APY_CONTRIBUTION Data Values");
+			String query = " LOAD DATA LOCAL INFILE '" + filename
+					+ "' INTO TABLE APY_CONTRIBUTION FIELDS TERMINATED BY '|' (BANK_CODE, BRANCH_CODE, SCHEME_CODE, ACCOUNT_NO, TRANSACTION_DATE,"
+					+ " JOURNAL_NO, PRAN, TRANSACTION_TYPE, OVER_DUE, TOTAL_CONTRIBUTION, CONTRIBUTION_TYPE, CONTRIBUTION_MONTH,"
+					+ " CONTRIBUTION_YEAR, TELLER_NO, CIF_CODE,ERROR_MESSAGE)";
+			System.out.println(query);
+			stmt.executeUpdate(query);
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+
+		}
+	}
+
+}

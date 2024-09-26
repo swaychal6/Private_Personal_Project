@@ -1,0 +1,10 @@
+package com.pm.jns.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.pm.jns.entity.CustomerDetailsEntity;
+
+public interface CustomerDetailsRepo extends JpaRepository<CustomerDetailsEntity, Long> {
+
+	
+}

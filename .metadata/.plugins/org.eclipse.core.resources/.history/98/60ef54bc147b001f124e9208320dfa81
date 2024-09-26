@@ -1,0 +1,5 @@
+package com.PMJJBYApplication.entity;
+
+public class BaseEntity {
+
+}

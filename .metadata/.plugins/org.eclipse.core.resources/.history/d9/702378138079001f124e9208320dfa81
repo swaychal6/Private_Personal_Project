@@ -1,0 +1,8 @@
+package com.pm.jns.repository;
+
+public interface CommonBaseRepository<T,K> {
+
+	T getCustomerDetailsByCustomerAccAndCif();
+	
+	
+}

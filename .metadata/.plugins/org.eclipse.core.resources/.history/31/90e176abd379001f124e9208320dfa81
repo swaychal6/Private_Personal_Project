@@ -1,0 +1,13 @@
+//package com.pm.jns.repository;
+//
+//import org.springframework.stereotype.Repository;
+//
+//@Repository
+//public interface CommonBaseRepoImpl<T,K> extends CommonBaseRepository<T,K>{
+//
+//	default T getCustomerDetails(String cifCode, String customerAcc,String bankCode) {
+//		return this.getCustomerDetailsByCustomerAccAndCif(getClass().getSimpleName(), cifCode, customerAcc, bankCode);
+//	}
+//	
+//	
+//}

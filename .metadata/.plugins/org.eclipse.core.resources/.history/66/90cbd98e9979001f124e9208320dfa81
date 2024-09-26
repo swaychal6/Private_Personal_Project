@@ -1,0 +1,99 @@
+//package com.pm.jns.entity;
+//
+//import java.time.LocalDateTime;
+//
+//import org.springframework.data.annotation.CreatedDate;
+//import org.springframework.format.annotation.DateTimeFormat;
+//
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Table;
+//import lombok.AllArgsConstructor;
+//import lombok.Getter;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
+//
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Getter
+//@Setter
+//@Entity
+//@Table(name = "PM_CUSTOMER_DETAILS")
+//public class CustomerDetails extends BaseEntity<String> {
+//	@Column(nullable = false)
+//	@DateTimeFormat(pattern = "dd/MM/yyyy", style = "dd/MM/yyyy")
+//	private String  DOB;
+//
+//	@Column(nullable = false)
+//	@CreatedDate
+//	private LocalDateTime PROPOSAL_DATE;
+//
+//	@Column(nullable = false, length = 6)
+//	private String PINCODE;
+//
+//	@Column(nullable = true, length = 10)
+//	private String MOBILE;
+//
+//	@Column(nullable = false, length = 100)
+//	private String ACCT_HOLDER_NAME;
+//
+//	@Column(nullable = false, length = 11)
+//	private String BRANCH_IFSC;
+//
+//	@Column(nullable = true, length = 5)
+//	private String ACCT_HOME_BRANCH;
+//
+//	@Column(nullable = false, length = 1)
+//	private String GENDER;
+//
+//	@Column(nullable = true, length = 100)
+//	private String EMAILID;
+//
+//	@Column(nullable = true, length = 50)
+//	private String ACCT_OPEN_DATE;
+//
+//	@Column(nullable = true)
+//	private Integer MEMBER_OCCUPATION;
+//
+//	@Column(nullable = false, length = 100)
+//	private String ADD1;
+//
+//	@Column(nullable = true, length = 100)
+//	private String ADD2;
+//
+//	@Column(nullable = true, length = 100)
+//	private String ADD3;
+//
+//	@Column(nullable = true, length = 100)
+//	private String ADD4;
+//
+//	@Column(nullable = true, length = 50)
+//	private String CITY;
+//
+//	@Column(nullable = true, length = 50)
+//	private String STATE;
+//
+//	@Column(nullable = true, length = 10)
+//	private String BC_CODE;
+//
+//	@Column(nullable = true, length = 10)
+//	private String ACC_HOME_BRANCH;
+//
+//	@Column(nullable = true)
+//	private int OCCUPATION;
+//
+//	@Column(nullable = true, length = 50)
+//	private String NAME_OF_DISTRICT;
+//
+//	@Column(nullable = true, length = 6)
+//	private String DEATH_DATE;
+//
+//	@Column(precision = 17, scale = 3)
+//	private double CURR_BAL;
+//
+//	@Column(nullable = true, length = 25)
+//	private String ACCNTNUMBER2;
+//
+//	@Column(nullable = true)
+//	private String ACCNTNUMBER1;
+//}

@@ -1,0 +1,16 @@
+package com.pm.jns.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.NoRepositoryBean;
+
+import com.pm.jns.entity.BANK_MASTER_AGENCY;
+
+@NoRepositoryBean
+public interface BankMasterAgencyRepository extends BaseRepository<BANK_MASTER_AGENCY, String>{
+
+	
+	default List<BANK_MASTER_AGENCY> getAllBankMasterDetails() {
+		return this.findAll();
+	}
+}

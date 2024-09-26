@@ -1,0 +1,11 @@
+package com.jansuraksha.dto.updateAcstatusDto;
+
+import com.jansuraksha.dto.GetCustomerDetailDto;
+
+public class UpdateAcStatusFrontendReq extends GetCustomerDetailDto{
+
+	private String policyStatus;
+	
+	private String reasonOfClosure;
+	
+}
